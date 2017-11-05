@@ -1,6 +1,10 @@
 class Shingling:
 
     def __init__(self, doc, k):
+        # TODO: preprocessing of documents
+        # Questions:
+        # 1) What to do with \t and \n characters? (I suggest to convert them to whitespace).
+        # 2) Multiple consecutive white-spaces -> single whitespace
         self.doc = doc
         self.k = k
         self.shingles = set()
