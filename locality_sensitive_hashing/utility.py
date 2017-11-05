@@ -20,8 +20,7 @@ def compress_hash(string, n_bits):
 
 def generate_hash_functions(n, seed=777, max_value=2**32-1, prime_number=2**61-1):
     """
-    Algorithm extracted from: http://mccormickml.com/2015/06/12/minhash-tutorial-with-python-code/
-    Also look https://en.wikipedia.org/wiki/Universal_hashing#Hashing_integers for Mersenne prime
+    Algorithm extracted from: ttps://en.wikipedia.org/wiki/Universal_hashing#Hashing_integers
 
     :param n:
     :param seed:
@@ -35,4 +34,4 @@ def generate_hash_functions(n, seed=777, max_value=2**32-1, prime_number=2**61-1
         _a = random.randint(1, max_value-1)
         _b = random.randint(1, max_value-1)
         _c = prime_number
-        yield lambda x, a=_a, b=_b, c=_c: (a * x + b) % c
+        yield lambda x, a=_a, b=_b, c=_c: ((a * x + b) % c) % max_value
