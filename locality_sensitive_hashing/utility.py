@@ -1,11 +1,17 @@
 import random
 
+
 def compare_sets(set1, set2):
     set_intersection = set1.intersection(set2)
     set_union = set1.union(set2)
 
     jaccard_similarity = len(set_intersection) / len(set_union)
     return jaccard_similarity
+
+
+def compare_signatures(sig1, sig2):
+    assert len(sig1) == len(sig2)
+    return len([i for i, j in zip(sig1, sig2) if i == j]) / len(sig1)
 
 
 def compress_hash(string, n_bits):
