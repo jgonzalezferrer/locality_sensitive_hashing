@@ -1,4 +1,4 @@
-# locality_sensitive_hashing
+# Locality Sensitive Hashing in Python
 
 ## Testing
 

@@ -1,19 +1,20 @@
-
 class Compare:
-
-    def compare_sets(self, set1, set2):
+    def __init__(self, set1, set2):
         """
 
         :param set1:
         :param set2:
-        :return:
         """
+        self.set1 = set1
+        self.set2 = set2
+        self._compare_sets()
 
-        set_intersection = set1.intersection(set2)
-        set_union = set1.union(set2)
+    def _compare_sets(self):
 
-        jaccard_similarity = len(set_intersection)/len(set_union)
-        return jaccard_similarity
+        set_intersection = self.set1.intersection(self.set2)
+        set_union = self.set1.union(self.set2)
+
+        self.compare_sets = len(set_intersection) / len(set_union)
 
     def jaccard_similarity(self):
         pass
