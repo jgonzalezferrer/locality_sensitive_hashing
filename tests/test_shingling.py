@@ -21,16 +21,16 @@ def test_strings_shingling_similarity():
 
 
 def test_minhash_similarity():
-    editorial = "editorial"
-    factorial = "factorial"
+    str1 = "editorial"
+    str2 = "factorial"
 
-    editorial_shingle = Shingling(editorial, 5)
-    factorial_shingle = Shingling(factorial, 5)
+    str1_shingle = Shingling(str1, 5)
+    str2_shingle = Shingling(str2, 5)
 
-    editorial_minhashing = MinHashing(editorial_shingle.shingles, 100)
-    factorial_minhashing = MinHashing(factorial_shingle.shingles, 100)
+    str1_minhashing = MinHashing(str1_shingle.shingles, 100)
+    str2_minhashing = MinHashing(str2_shingle.shingles, 100)
 
-    print(compare_signatures(editorial_minhashing.signature, factorial_minhashing.signature))
+    print(compare_signatures(str1_minhashing.signature, str2_minhashing.signature))
 
 
 if __name__ == "__main__":
