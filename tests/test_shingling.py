@@ -6,8 +6,8 @@ from locality_sensitive_hashing.utility import compare_sets, compare_signatures
 
 
 def test_strings_shingling_similarity():
-    editorial = "editorial"
-    factorial = "factorial"
+    editorial = "The dog is running"
+    factorial = "The cat is running"
     expected_values = [(1, 0.6), (5, 0.25), (9, 0.0)]
 
     for k, expected in expected_values:
