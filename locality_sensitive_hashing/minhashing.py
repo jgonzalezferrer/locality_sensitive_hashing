@@ -21,7 +21,7 @@ class MinHashing:
         for i in range(self.n):
             m = random.randint(1, 100)
             c = random.randint(1, 100)
-            yield lambda x, a=m, b=c: (a * x + b) % self.n  # TODO: not sure whether n or hash buckets.
+            yield lambda x, a=m, b=c: (a * x + b) % len(self.hashed_singles)  # TODO: not sure whether n or hash buckets.
 
     def _create_signature(self):
         signature = [None] * self.n
