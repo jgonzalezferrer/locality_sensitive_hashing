@@ -7,5 +7,5 @@ def compare_sets(set1, set2):
 
 
 def compress_hash(string, n_bytes):
-    return hash(string) % 2**(n_bytes*8)-1
+    return hash(string) % (2**(n_bytes*8)-1)
 
