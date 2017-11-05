@@ -14,5 +14,5 @@ class Shingling:
     def _create_shingles(self):
         characters = list(self.doc)  # split document into single characters
         str_shingles = ["".join(characters[i:i+self.k]) for i in range(len(characters)-self.k+1)]
-        hash_shingles = [hash(shingle) for shingle in str_shingles]
+        hash_shingles = [hash(shingle) % 2**32 for shingle in str_shingles]  # 4B hash values
         self.shingles = set(hash_shingles)  # unique hash singles
