@@ -1,3 +1,6 @@
+from locality_sensitive_hashing.utility import compress_hash
+
+
 class Shingling:
     """
 
@@ -27,5 +30,5 @@ class Shingling:
         """
         characters = list(self.doc)  # split document into single characters
         str_shingles = ["".join(characters[i:i+self.k]) for i in range(len(characters)-self.k+1)]
-        hash_shingles = [hash(shingle) % 2**32 for shingle in str_shingles]  # 4B hash values
+        hash_shingles = [compress_hash(shingle) for shingle in str_shingles]  # 4B hash values
         self.shingles = set(hash_shingles)  # unique hash singles
