@@ -1,5 +1,7 @@
 from locality_sensitive_hashing.utility import compress_hash
 
+SHINGLE_BITS_REPRESENTATION = 32
+
 
 class Shingling:
     """
@@ -30,5 +32,5 @@ class Shingling:
         """
         characters = list(self.doc)  # split document into single characters
         str_shingles = ["".join(characters[i:i+self.k]) for i in range(len(characters)-self.k+1)]
-        hash_shingles = [compress_hash(shingle) for shingle in str_shingles]  # 4B hash values
+        hash_shingles = [compress_hash(shingle, SHINGLE_BITS_REPRESENTATION) for shingle in str_shingles]
         self.shingles = set(hash_shingles)  # unique hash singles
