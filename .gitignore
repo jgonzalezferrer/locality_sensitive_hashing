@@ -3,3 +3,6 @@ __pycache__/
 
 # pycharm files
 .idea/
+
+# python files
+*.pyc
