@@ -1,6 +1,8 @@
 from collections import defaultdict
+from itertools import combinations
 
 from locality_sensitive_hashing.utility import compress_hash
+from locality_sensitive_hashing.shingling import SHINGLE_BITS_REPRESENTATION
 
 
 class LSH:
@@ -10,6 +12,7 @@ class LSH:
         self.t = t
 
         candidate_pairs = self._create_candidate_pairs()
+        print(candidate_pairs)
 
     def _create_candidate_pairs(self):
 
@@ -32,10 +35,11 @@ class LSH:
 
         bucket_array = [defaultdict(list)]*buckets
 
-        for doc_id, signature in self.signatures:
+        for doc_id, signature in self.signatures.items():
             for b in range(buckets):
-                bucket = compress_hash(tuple(signature[b*r:(b+1)*r]))  # Python can calculate hash for multiple numbers from tuples.
+                bucket = compress_hash(tuple(signature[b*r:(b+1)*r]), SHINGLE_BITS_REPRESENTATION)  # Python can calculate hash for multiple numbers from tuples.
                 bucket_array[b][bucket].append(doc_id)
+
 
         """
         We then consider any pair that hashed to the same bucket for any
@@ -44,6 +48,16 @@ class LSH:
         """
 
         # TODO: create candidate pairs.
+
+        candidate_pairs = set()
+
+        for band in bucket_array:
+            for pairs in band.values():
+                if len(pairs) > 1:  # more than one element in bucket
+                    for candidate_pair in combinations(pairs, 2):
+                        candidate_pairs.add(candidate_pair)
+
+        return candidate_pairs
 
 
     def _calculate_bands_and_rows(self):
