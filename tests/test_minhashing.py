@@ -10,10 +10,12 @@ def test_minhash_similarity():
     str1 = "editorial"
     str2 = "factorial"
 
-    str1_shingle = Shingling(str1, 5)
-    str2_shingle = Shingling(str2, 5)
+    k = 5
+    str1_shingle = Shingling(str1, k)
+    str2_shingle = Shingling(str2, k)
 
-    str1_minhashing = MinHashing(str1_shingle.shingles, 10000)
-    str2_minhashing = MinHashing(str2_shingle.shingles, 10000)
+    n = 10000
+    str1_minhashing = MinHashing(str1_shingle.shingles, n)
+    str2_minhashing = MinHashing(str2_shingle.shingles, n)
 
     assert_almost_equal(compare_signatures(str1_minhashing.signature, str2_minhashing.signature), 0.25, 1)
