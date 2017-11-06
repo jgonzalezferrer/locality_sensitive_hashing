@@ -3,7 +3,7 @@ from nose.tools import assert_almost_equal
 from locality_sensitive_hashing.shingling import Shingling
 from locality_sensitive_hashing.minhashing import MinHashing
 
-from locality_sensitive_hashing.utility import  compare_signatures
+from locality_sensitive_hashing.utility import compare_signatures
 
 
 def test_minhash_similarity():

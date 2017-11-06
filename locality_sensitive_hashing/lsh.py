@@ -1,7 +1,7 @@
 from collections import defaultdict
 from itertools import combinations
 
-from locality_sensitive_hashing.utility import compress_hash
+from locality_sensitive_hashing.utility import compress_hash, compare_signatures
 from locality_sensitive_hashing.shingling import SHINGLE_BITS_REPRESENTATION
 
 
@@ -11,8 +11,8 @@ class LSH:
         self.signatures = signatures
         self.t = t
 
-        candidate_pairs = self._create_candidate_pairs()
-        print(candidate_pairs)
+        self.candidate_pairs = self._create_candidate_pairs()
+        self.similar_pairs = self._check_threshold()
 
     def _create_candidate_pairs(self):
 
@@ -47,8 +47,6 @@ class LSH:
         similarity
         """
 
-        # TODO: create candidate pairs.
-
         candidate_pairs = set()
 
         for band in bucket_array:
@@ -59,8 +57,15 @@ class LSH:
 
         return candidate_pairs
 
-
     def _calculate_bands_and_rows(self):
         b = 4  # TODO
         r = 3  # TODO
         return b, r
+
+    def _check_threshold(self):
+        similar_pairs = []
+        for can1, can2 in self.candidate_pairs:
+            if compare_signatures(self.signatures[can1], self.signatures[can2]) >= self.t:
+                similar_pairs.append((can1, can2))
+
+        return similar_pairs
