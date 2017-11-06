@@ -7,15 +7,17 @@ from locality_sensitive_hashing.utility import compare_signatures
 def test_lsh_similarity():
     str1 = "editorial"
     str2 = "factorial"
-    str3 = "sensacional"
+    str3 = "phone number"
 
-    str1_shingle = Shingling(str1, 1)
-    str2_shingle = Shingling(str2, 1)
-    str3_shingle = Shingling(str3, 1)
+    k = 1
+    str1_shingle = Shingling(str1, k)
+    str2_shingle = Shingling(str2, k)
+    str3_shingle = Shingling(str3, k)
 
-    str1_minhashing = MinHashing(str1_shingle.shingles, 10000)
-    str2_minhashing = MinHashing(str2_shingle.shingles, 10000)
-    str3_minhashing = MinHashing(str3_shingle.shingles, 10000)
+    n = 12
+    str1_minhashing = MinHashing(str1_shingle.shingles, n)
+    str2_minhashing = MinHashing(str2_shingle.shingles, n)
+    str3_minhashing = MinHashing(str3_shingle.shingles, n)
 
     signatures_collection = {"doc1": str1_minhashing.signature,
                              "doc2": str2_minhashing.signature,
@@ -25,6 +27,7 @@ def test_lsh_similarity():
 
     print(lsh.candidate_pairs)
     print(lsh.similar_pairs)
+
 
 
 if __name__== '__main__':

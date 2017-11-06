@@ -1,5 +1,6 @@
 from collections import defaultdict
 from itertools import combinations
+from sympy import nsolve, Symbol
 
 from locality_sensitive_hashing.utility import compress_hash, compare_signatures
 from locality_sensitive_hashing.shingling import SHINGLE_BITS_REPRESENTATION
@@ -58,6 +59,22 @@ class LSH:
         return candidate_pairs
 
     def _calculate_bands_and_rows(self):
+        if __name__ == '__main__':
+            if False:
+                x = Symbol('x')
+                y = Symbol('y')
+                n = len(self.signatures)
+                sol = nsolve([x * y / n - 1, (1 / x) ** (1 / y) / self.t - 1], [x, y], [1, 1])
+
+                # these two values are close to the real solution
+                b = sol[0]
+                r = sol[1]
+
+                # TODO: find the closest integer such as: b*r = n and (1 / x) ** (1 / y) < t.
+                # Last equation because:  "If avoidance of false negatives is important,
+                # you may wish to select b and r to produce a threshold lower than t"
+                # QUESTION: which value should be optimize first? b or r?
+
         b = 4  # TODO
         r = 3  # TODO
         return b, r
