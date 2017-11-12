@@ -1,3 +1,5 @@
+from __future__ import division
+
 from locality_sensitive_hashing.utility import compress_hash
 
 SHINGLE_BITS_REPRESENTATION = 32
@@ -7,7 +9,7 @@ class Shingling:
     """
 
     """
-    def __init__(self, doc, k):
+    def __init__(self, doc, k, hash_shingles=True):
         """
 
         :param doc:
@@ -21,6 +23,7 @@ class Shingling:
         '''
         self.doc = doc
         self.k = k
+        self.hash_shingles = hash_shingles
         self.shingles = set()
 
         self._create_shingles()
@@ -32,5 +35,8 @@ class Shingling:
         """
         characters = list(self.doc)  # split document into single characters
         str_shingles = ["".join(characters[i:i+self.k]) for i in range(len(characters)-self.k+1)]
-        hash_shingles = [compress_hash(shingle, SHINGLE_BITS_REPRESENTATION) for shingle in str_shingles]
-        self.shingles = set(hash_shingles)  # unique hash singles
+        if self.hash_shingles:
+            hash_shingles = [compress_hash(shingle, SHINGLE_BITS_REPRESENTATION) for shingle in str_shingles]
+            self.shingles = set(hash_shingles)  # unique hash singles
+        else:
+            self.shingles = set(str_shingles)

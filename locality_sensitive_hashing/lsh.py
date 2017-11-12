@@ -1,23 +1,34 @@
+from __future__ import division
+
 from collections import defaultdict
 from itertools import combinations
-from sympy import nsolve, Symbol
 
 from locality_sensitive_hashing.utility import compress_hash, compare_signatures
 from locality_sensitive_hashing.shingling import SHINGLE_BITS_REPRESENTATION
 
 
-class LSH:
+def _calculate_factors(n):
+    factors = []
 
-    def __init__(self, signatures, t):
+    for i in range(1, n + 1):
+        if n % 1 == 0:
+            factors.append(i)
+    return factors
+
+
+class LSH:
+    def __init__(self, signatures, threshold):
         self.signatures = signatures
-        self.t = t
+        self.threshold = threshold
 
         self.candidate_pairs = self._create_candidate_pairs()
         self.similar_pairs = self._check_threshold()
 
     def _create_candidate_pairs(self):
 
-        buckets, r = self._calculate_bands_and_rows()
+        band, r = self._calculate_bands_and_rows()
+
+        print(band, r)
 
         """
         Algorithm:
@@ -34,20 +45,20 @@ class LSH:
         :return:
         """
 
-        bucket_array = [defaultdict(list)]*buckets
+        bucket_array = [defaultdict(list)] * band
 
         for doc_id, signature in self.signatures.items():
-            for b in range(buckets):
-                bucket = compress_hash(tuple(signature[b*r:(b+1)*r]), SHINGLE_BITS_REPRESENTATION)  # Python can calculate hash for multiple numbers from tuples.
-                bucket_array[b][bucket].append(doc_id)
 
+            for b in range(band):
+                # Python can calculate hash for multiple numbers from tuples.
+                bucket = compress_hash(tuple(signature[b * r:(b + 1) * r]), SHINGLE_BITS_REPRESENTATION)
+                bucket_array[b][bucket].append(doc_id)
 
         """
         We then consider any pair that hashed to the same bucket for any
         of the hashings to be a candidate pair. We check only the candidate pairs for
         similarity
         """
-
         candidate_pairs = set()
 
         for band in bucket_array:
@@ -59,30 +70,35 @@ class LSH:
         return candidate_pairs
 
     def _calculate_bands_and_rows(self):
-        if __name__ == '__main__':
-            if False:
-                x = Symbol('x')
-                y = Symbol('y')
-                n = len(self.signatures)
-                sol = nsolve([x * y / n - 1, (1 / x) ** (1 / y) / self.t - 1], [x, y], [1, 1])
 
-                # these two values are close to the real solution
-                b = sol[0]
-                r = sol[1]
+        n = len(self.signatures)
+        factors_b = _calculate_factors(n)  # take each factor as b and calculate r and t
 
-                # TODO: find the closest integer such as: b*r = n and (1 / x) ** (1 / y) < t.
-                # Last equation because:  "If avoidance of false negatives is important,
-                # you may wish to select b and r to produce a threshold lower than t"
-                # QUESTION: which value should be optimize first? b or r?
+        minimum_threshold = 1  # Initialize distance to a large value
+        current_b = factors_b[0]
 
-        b = 4  # TODO
-        r = 3  # TODO
+        for b in factors_b:
+            r = n / b
+
+            t = (1.0 / b) ** (1.0 / r)
+
+            if abs(t - self.threshold) < minimum_threshold:
+                minimum_threshold = abs(t - self.threshold)
+                current_b = b
+
+        b = current_b
+        r = int(n / b)
+
+        print("b is {} and r is {}, And best approximation for threshold {} is t = {}"
+              .format(b, r, self.threshold, (1.0 / b) ** (1.0 / r)))
+
         return b, r
 
     def _check_threshold(self):
-        similar_pairs = []
+        similar_pairs = {}
         for can1, can2 in self.candidate_pairs:
-            if compare_signatures(self.signatures[can1], self.signatures[can2]) >= self.t:
-                similar_pairs.append((can1, can2))
+            if compare_signatures(self.signatures[can1], self.signatures[can2]) >= self.threshold:
+                similar_pairs[can1] = can2
+                similar_pairs[can2] = can1
 
         return similar_pairs

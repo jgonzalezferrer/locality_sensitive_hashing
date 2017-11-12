@@ -2,6 +2,13 @@ import random
 
 
 def compare_sets(set1, set2):
+    """
+    Compute real Jaccard similarity of 2 sets. Not applicable for large sets, just for benchmarking
+    the implementation on smaller sets to verify the correctness of implementation.
+    :param set1:
+    :param set2:
+    :return:
+    """
     set_intersection = set1.intersection(set2)
     set_union = set1.union(set2)
 
@@ -15,6 +22,7 @@ def compare_signatures(sig1, sig2):
 
 
 def compress_hash(string, n_bits):
+    # In addition to this, you can use `hashed_value & 0xffffffff` for converting to 8-bits
     return hash(string) % (2**n_bits-1)
 
 
