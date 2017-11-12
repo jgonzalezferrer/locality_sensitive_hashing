@@ -17,9 +17,10 @@ def _calculate_factors(n):
 
 
 class LSH:
-    def __init__(self, signatures, threshold):
+    def __init__(self, signatures, threshold, minhash_threshold):
         self.signatures = signatures
         self.threshold = threshold
+        self.minhash_threshold = minhash_threshold
 
         self.candidate_pairs = self._create_candidate_pairs()
         self.similar_pairs = self._check_threshold()
@@ -27,8 +28,6 @@ class LSH:
     def _create_candidate_pairs(self):
 
         band, r = self._calculate_bands_and_rows()
-
-        print(band, r)
 
         """
         Algorithm:
@@ -89,7 +88,7 @@ class LSH:
         b = current_b
         r = int(n / b)
 
-        print("The values for b is {} and r is {}. The best approximation for threshold {} is t = {}"
+        print("The values for b is {} and r is {}. \nThe best approximation for threshold {} is t = {}"
               .format(b, r, self.threshold, (1.0 / b) ** (1.0 / r)))
 
         return b, r
@@ -97,7 +96,7 @@ class LSH:
     def _check_threshold(self):
         similar_pairs = {}
         for can1, can2 in self.candidate_pairs:
-            if compare_signatures(self.signatures[can1], self.signatures[can2]) >= self.threshold:
+            if compare_signatures(self.signatures[can1], self.signatures[can2]) >= self.minhash_threshold:
                 similar_pairs[can1] = can2
                 similar_pairs[can2] = can1
 

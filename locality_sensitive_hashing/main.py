@@ -72,17 +72,17 @@ def main():
     dataFile = "../data/articles_" + str(numDocs) + ".train"
     truthFile = "../data/articles_" + str(numDocs) + ".truth"
 
-    plagiaries = read_ground_truth(truthFile)
+    plagiarises = read_ground_truth(truthFile)
     doc_list, shingle_set = compute_k_shingles(dataFile, k=5)
-
-    minhash_docs = compute_minhash(shingle_set, doc_list, threshold=0.5, n=100)
+    minhash_threshold = 0.5
+    minhash_docs = compute_minhash(shingle_set, doc_list, threshold=minhash_threshold, n=100)
 
     lsh_threshold = 0.8
     doc_signatures_dict = dict(zip(doc_list, minhash_docs))
 
-    lsh_sim = lsh.LSH(doc_signatures_dict, lsh_threshold).similar_pairs
+    lsh_sim = lsh.LSH(doc_signatures_dict, lsh_threshold, minhash_threshold).similar_pairs
 
-    print(plagiaries)
+    print(plagiarises)
     print(lsh_sim)
 
 
