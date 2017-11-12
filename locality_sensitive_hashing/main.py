@@ -78,9 +78,9 @@ def main():
     minhash_docs = compute_minhash(shingle_set, doc_list, threshold=0.5, n=100)
 
     lsh_threshold = 0.8
-    doc_signitures_dict = dict(zip(doc_list, minhash_docs))
+    doc_signatures_dict = dict(zip(doc_list, minhash_docs))
 
-    lsh_sim = lsh.LSH(doc_signitures_dict, lsh_threshold).similar_pairs
+    lsh_sim = lsh.LSH(doc_signatures_dict, lsh_threshold).similar_pairs
 
     print(plagiaries)
     print(lsh_sim)
