@@ -89,7 +89,7 @@ class LSH:
         b = current_b
         r = int(n / b)
 
-        print("b is {} and r is {}, And best approximation for threshold {} is t = {}"
+        print("The values for b is {} and r is {}. The best approximation for threshold {} is t = {}"
               .format(b, r, self.threshold, (1.0 / b) ** (1.0 / r)))
 
         return b, r
